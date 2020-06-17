@@ -1,0 +1,37 @@
+@import "../../_defaults.scss";
+
+.brand-container {
+    display: block;
+    margin-top: 16px;
+    line-height: 125%;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+
+    .apprentice {
+        font-size: 2.5rem;
+        font-weight: bolder;
+        padding: 16px 24px;
+        letter-spacing: 0px;
+        animation-duration: 1.5s;
+        animation-name: glowy;
+        animation-iteration-count: infinite;
+        animation-direction: alternate;
+    }
+
+    .chat-room {
+        font-size: 0.85rem;
+        font-weight: lighter;
+        letter-spacing: 3px;
+        text-shadow: 0px 0px 5px rgba($color: $lightgrey, $alpha: 0.5);
+    }
+}
+
+@keyframes glowy {
+    from {
+        text-shadow: 0px 0px 10px rgba($color: $lightgrey, $alpha: 0.3);
+    }
+    to {
+        text-shadow: 0px 0px 12px rgba($color: $lightgrey, $alpha: 0.6);
+    }
+}

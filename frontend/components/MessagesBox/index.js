@@ -20,7 +20,8 @@ const MessagesBox = ({ messages }) => {
             {messages.map((message, messageIndex) => {
                 return (
                     <div key={`message-${messageIndex}`} className="message">
-                        {message}
+                        <span className="message-from">Richie</span>
+                        <div className="message-text">{message}</div>
                     </div>
                 );
             })}

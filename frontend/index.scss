@@ -40,4 +40,32 @@ body,
         flex-direction: column;
         align-items: stretch;
     }
+
+    span.placeholder {
+        position: relative;
+
+        &::after {
+            content: "";
+            background: $lightgrey;
+            position: relative;
+            display: inline-block;
+            top: -2px;
+            height: 8px;
+            width: 100%;
+            border-radius: 5px;
+        }
+
+        &.small::after {
+            width: 25%;
+        }
+        &.medium::after {
+            width: 50%;
+        }
+        &.large::after {
+            width: 75%;
+        }
+        &.largest::after {
+            width: 100%;
+        }
+    }
 }

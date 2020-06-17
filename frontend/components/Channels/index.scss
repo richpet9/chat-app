@@ -3,6 +3,7 @@
 .channel-container {
     position: relative;
     top: 25%;
+    padding-left: 24px;
 
     .channel-button {
         display: block;
@@ -14,7 +15,6 @@
         -webkit-appearance: none;
         cursor: pointer;
         padding: 8px;
-        padding-left: 24px;
         text-align: left;
         font-size: 0.85rem;
         color: white;
@@ -55,6 +55,13 @@
 
         .fas {
             margin-right: 18px;
+
+            &::after {
+                top: -4px;
+                left: -5px;
+                width: calc(100% + 10px);
+                height: calc(100% + 8px);
+            }
         }
     }
 }

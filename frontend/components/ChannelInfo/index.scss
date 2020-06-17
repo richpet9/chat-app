@@ -4,9 +4,11 @@
     width: 100%;
     background: white;
     padding: 8px 24px;
+    padding-bottom: 16px;
     box-shadow: $panelShadow;
     font-size: 1rem;
     letter-spacing: 0.25px;
+    min-height: 40px;
 
     .channel-name {
         padding: 0;
@@ -19,7 +21,7 @@
         i.fas {
             margin-right: 8px;
             position: absolute;
-            top: 8px;
+            top: 10px;
             left: 24px;
             font-size: 1.1rem;
         }
@@ -30,5 +32,26 @@
         font-weight: lighter;
         color: $grey;
         margin-left: 24px;
+
+        .divider {
+            display: inline-block;
+            position: relative;
+            top: 1px;
+            width: 2px;
+            height: 12px;
+            border-radius: 2px;
+            background: $lightgrey;
+            margin: 0 8px;
+        }
+    }
+
+    a {
+        color: inherit;
+        text-decoration: none;
+
+        &:hover {
+            color: $richblack;
+            text-decoration: underline;
+        }
     }
 }
