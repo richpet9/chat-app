@@ -1,20 +1,19 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import ReactDOM from "react-dom";
 import PubNub from "pubnub";
-import { PubNubProvider, PubNubConsumer } from "pubnub-react";
+import { PubNubProvider, usePubNub } from "pubnub-react";
 import Channels from "./components/Channels";
 import ChannelInfo from "./components/ChannelInfo";
 import MessagesBox from "./components/MessagesBox";
 import MessageInput from "./components/MessageInput";
-import Footer from "./components/Footer";
 import BrandMark from "./components/BrandMark";
 
 import "./index.scss";
 
 const pubnub = new PubNub({
-    publishKey: "pub-c-1155d113-d930-4355-a5ba-6acb71e919f4",
-    subscribeKey: "sub-c-3d5f71dc-b01e-11ea-afa6-debb908608d9",
-    uuid: "rich",
+    publishKey: "pub-c-40ab95dd-4ce4-4968-86a4-39fa28f1c3b5",
+    subscribeKey: "sub-c-7baebe72-b0b7-11ea-af7b-9a67fd50bac3",
+    uuid: "test-user",
 });
 
 // TODO: Get channels from DB api
@@ -25,11 +24,8 @@ let channels = [
 ];
 
 const App = () => {
-    const [messages, setMessages] = useState([
-        "heyo",
-        "how r u",
-        "good today, you?",
-    ]);
+    const pubnub = usePubNub();
+    const [messages, setMessages] = useState([]);
     const [message, setMessage] = useState("");
     const [currentChannel, setCurrentChannel] = useState(null);
 
@@ -39,10 +35,9 @@ const App = () => {
                 channel: currentChannel.id,
                 message,
             },
-            (res) => {
-                if (!res.error) {
+            (status, response) => {
+                if (!status.error) {
                     setMessage("");
-                    // TODO: Send this message to the MongoDB api
                 }
             }
         );
@@ -53,6 +48,7 @@ const App = () => {
             setMessage("");
             setCurrentChannel(channel);
             // TODO: Get message history from MongoDB api
+            setMessages([]);
         } else {
             setCurrentChannel(null);
             setMessages([]);
@@ -64,10 +60,6 @@ const App = () => {
         const hash = window.location.hash.substring(1);
         if (channels.map((channel) => channel.id).includes(hash)) {
             changeChannel(channels.filter((channel) => channel.id == hash)[0]);
-            console.log(
-                "Changing channel to: " +
-                    channels.filter((channel) => channel.id == hash)[0].name
-            );
         } else if (channels.length > 0) {
             changeChannel(channels[0]);
         } else {
@@ -75,43 +67,54 @@ const App = () => {
         }
     }, []);
 
+    useEffect(() => {
+        pubnub.addListener({
+            message: (messageEvent) => {
+                setMessages([
+                    ...messages,
+                    {
+                        from: messageEvent.publisher,
+                        message: messageEvent.message,
+                    },
+                ]);
+            },
+        });
+    }, [messages]);
+
+    useEffect(() => {
+        pubnub.subscribe({ channels: channels.map((channel) => channel.id) });
+    }, []);
+
+    return (
+        <div className="App">
+            <div className="left-side-panel">
+                <BrandMark />
+                <Channels
+                    channels={channels}
+                    currentChannel={currentChannel} // TODO: move channel state to channels component
+                    changeChannel={changeChannel}
+                    placeholder={false}
+                />
+            </div>
+            <div className="center-panel">
+                <ChannelInfo channel={currentChannel} />
+                <MessagesBox messages={messages} />
+                <MessageInput
+                    message={message}
+                    setMessage={setMessage}
+                    sendMessage={sendMessage}
+                />
+            </div>
+        </div>
+    );
+};
+
+const Root = () => {
     return (
         <PubNubProvider client={pubnub}>
-            <div className="App">
-                <PubNubConsumer>
-                    {(client) => {
-                        client.addListener({
-                            message: (messageEvent) => {
-                                setMessages([
-                                    ...messages,
-                                    messageEvent.message,
-                                ]);
-                            },
-                        });
-                        client.subscribe(channels.map((channel) => channel.id));
-                    }}
-                </PubNubConsumer>
-                <div className="left-side-panel">
-                    <BrandMark />
-                    <Channels
-                        channels={channels}
-                        currentChannel={currentChannel} // TODO: move channel state to channels component
-                        changeChannel={changeChannel}
-                        placeholder={false}
-                    />
-                </div>
-                <div className="center-panel">
-                    <ChannelInfo channel={currentChannel} />
-                    <MessagesBox messages={messages} />
-                    <MessageInput
-                        message={message}
-                        setMessage={setMessage}
-                        sendMessage={sendMessage}
-                    />
-                </div>
-            </div>
+            <App />
         </PubNubProvider>
     );
 };
 
-ReactDOM.render(<App />, document.getElementById("root"));
+ReactDOM.render(<Root />, document.getElementById("root"));
