@@ -1,13 +1,31 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+
+import "./index.scss";
 
 const MessagesBox = ({ messages }) => {
-  return (
-    <div className="messages-container">
-      {messages.map((message, messageIndex) => {
-        return <div key={`message-${messageIndex}`}>{message}</div>;
-      })}
-    </div>
-  );
+    const [height, setHeight] = useState(0);
+
+    useEffect(() => {
+        setHeight(document.getElementById("channel-info-bar").clientHeight);
+    }, []);
+
+    return (
+        <div
+            className="messages-container"
+            style={{
+                height: window.innerHeight + "px",
+                top: height + "px",
+            }}
+        >
+            {messages.map((message, messageIndex) => {
+                return (
+                    <div key={`message-${messageIndex}`} className="message">
+                        {message}
+                    </div>
+                );
+            })}
+        </div>
+    );
 };
 
 export default MessagesBox;

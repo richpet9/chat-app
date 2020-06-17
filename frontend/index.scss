@@ -1,4 +1,7 @@
+@import "./_defaults.scss";
+
 * {
+    font-family: "IBM Plex Sans", Montserrat, Helvetica, sans-serif;
     box-sizing: border-box;
 }
 
@@ -9,23 +12,32 @@ body,
     margin: 0;
     width: 100%;
     height: 100%;
+    overflow: hidden;
 }
 
 .App {
     display: flex;
     position: relative;
     height: 100%;
+    font-size: 1rem;
 
     .left-side-panel {
+        @include blueGradient;
         height: 100%;
         width: 20%;
-        background: pink;
         overflow: auto;
+        box-shadow: $panelShadow;
+        position: relative;
+        z-index: 10;
     }
 
     .center-panel {
         height: 100%;
-        background: lightblue;
         flex-grow: 1;
+        position: relative;
+        display: flex;
+        justify-content: flex-start;
+        flex-direction: column;
+        align-items: stretch;
     }
 }

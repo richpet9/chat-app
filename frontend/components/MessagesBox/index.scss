@@ -1,0 +1,17 @@
+@import "../../_defaults.scss";
+
+.messages-container {
+    background: $lightgrey;
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    flex-direction: column;
+    bottom: 0;
+    padding-bottom: 110px;
+    padding-left: 24px;
+
+    .message {
+        font-size: 1rem;
+        color: $richblack;
+    }
+}

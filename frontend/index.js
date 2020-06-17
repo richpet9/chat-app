@@ -8,6 +8,7 @@ import MessagesBox from "./components/MessagesBox";
 import MessageInput from "./components/MessageInput";
 
 import "./index.scss";
+import Footer from "./components/Footer";
 
 const pubnub = new PubNub({
     publishKey: "pub-c-1155d113-d930-4355-a5ba-6acb71e919f4",
@@ -19,7 +20,11 @@ const pubnub = new PubNub({
 const channels = ["awesomeChannel", "funchannel", "dancingchannel"];
 
 const App = () => {
-    const [messages, setMessages] = useState([]);
+    const [messages, setMessages] = useState([
+        "heyo",
+        "how r u",
+        "good today, you?",
+    ]);
     const [message, setMessage] = useState("");
     const [currentChannel, setCurrentChannel] = useState(channels[0]);
 
@@ -64,6 +69,7 @@ const App = () => {
                 <div className="left-side-panel">
                     <Channels
                         channels={channels}
+                        currentChannel={currentChannel} // TODO: move channel state to channels component
                         changeChannel={changeChannel}
                     />
                 </div>

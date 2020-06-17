@@ -1,0 +1,12 @@
+@import "../../defaults.scss";
+
+footer {
+    background: $blue;
+    color: white;
+    font-size: 0.85rem;
+    width: 100%;
+    height: 24px;
+    position: absolute;
+    padding: 5px 0px 5px 5px;
+    bottom: 0;
+}

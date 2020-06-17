@@ -1,0 +1,40 @@
+@import "../../_defaults.scss";
+
+$margin: 24px;
+
+.message-input-container {
+    background: #ffffff;
+    width: calc(100% - #{2 * $margin});
+    position: absolute;
+    margin: 0 $margin;
+    bottom: $margin;
+    box-shadow: $panelShadow;
+
+    input[type="text"] {
+        padding: 16px;
+        font-size: 1rem;
+        border: none;
+        background: none;
+        outline: none;
+        -webkit-appearance: none;
+        flex-grow: 1;
+        width: 100%;
+    }
+
+    button {
+        position: absolute;
+        top: 13px;
+        right: 13px;
+        font-size: 1.3rem;
+        border: none;
+        color: $blue;
+        background: none;
+        outline: none;
+        -webkit-appearance: none;
+        cursor: pointer;
+
+        &:hover {
+            color: $darkblue;
+        }
+    }
+}
