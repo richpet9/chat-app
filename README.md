@@ -1,6 +1,6 @@
 # chat-app
 
-a [Sails v1](https://sailsjs.com) application
+a [Sails v1](https://sailsjs.com) application, using React and PubNub on the client-side.
 
 ### Links
 
@@ -13,5 +13,11 @@ a [Sails v1](https://sailsjs.com) application
 ### Version info
 
 This app was originally generated on Tue Jun 16 2020 14:27:36 GMT-0400 (EDT) using Sails v1.2.4.
+
+### API
+
+**User**
+**Channel**
+**Message**
 
 _overwhelming amount of config files brought to you (in part) by Sail.js!_
