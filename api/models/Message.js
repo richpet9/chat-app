@@ -13,7 +13,7 @@ module.exports = {
 
         from: { type: "string", required: true },
         message: { type: "string", required: true },
-        timeToken: { type: "number", required: true, defaultsTo: Date.now() },
+        timeToken: { type: "number", defaultsTo: Date.now() },
 
         //  ╔═╗╔╦╗╔╗ ╔═╗╔╦╗╔═╗
         //  ║╣ ║║║╠╩╗║╣  ║║╚═╗
@@ -22,5 +22,8 @@ module.exports = {
         //  ╔═╗╔═╗╔═╗╔═╗╔═╗╦╔═╗╔╦╗╦╔═╗╔╗╔╔═╗
         //  ╠═╣╚═╗╚═╗║ ║║  ║╠═╣ ║ ║║ ║║║║╚═╗
         //  ╩ ╩╚═╝╚═╝╚═╝╚═╝╩╩ ╩ ╩ ╩╚═╝╝╚╝╚═╝
+        channel: {
+            model: "channel",
+        },
     },
 };

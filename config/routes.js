@@ -20,8 +20,24 @@ module.exports.routes = {
 
     "GET /": { view: "pages/homepage" },
 
-    /* API ENDPOINTS */
-    // "GET /api/user/create": { action: "user/create-user" },
+    /***************************************************************************
+     *                      USER CONTROLLER ENDPOINTS                          *
+     ***************************************************************************/
+    "POST /api/user/:username": "UserController.createUsername",
+    "POST /api/user/:username/update": "UserController.updateUser",
+    "GET /api/user/:username?": "UserController.getUsername",
+
+    /***************************************************************************
+     *                    CHANNEL CONTROLLER ENDPOINTS                         *
+     ***************************************************************************/
+    "POST /api/channel/:channelURL": "ChannelController.createChannel",
+    "POST /api/channel/:channelURL/post": "ChannelController.postMessage",
+    "GET /api/channel/:channelURL?": "ChannelController.getChannel",
+    "GET /api/channel/:channelURL/messages": "ChannelController.getMessages",
+
+    /**************************************************************************
+     *                    MESSAGE CONTROLLER ENDPOINTS                         *
+     ***************************************************************************/
 
     /***************************************************************************
      *                                                                          *

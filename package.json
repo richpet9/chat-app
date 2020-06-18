@@ -1,58 +1,60 @@
 {
-  "name": "chat-app",
-  "private": true,
-  "version": "0.0.0",
-  "description": "a Sails application",
-  "keywords": [],
-  "dependencies": {
-    "@sailshq/connect-redis": "^3.2.1",
-    "@sailshq/lodash": "^3.10.3",
-    "@sailshq/socket.io-redis": "^5.2.0",
-    "grunt": "1.0.4",
-    "pubnub": "^4.28.0",
-    "pubnub-react": "^2.0.0",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "sails": "^1.2.4",
-    "sails-hook-grunt": "^4.0.0",
-    "sails-hook-orm": "^2.1.1",
-    "sails-hook-sockets": "^2.0.0"
-  },
-  "devDependencies": {
-    "@babel/core": "^7.10.2",
-    "@babel/preset-env": "^7.10.2",
-    "@babel/preset-react": "^7.10.1",
-    "babel-loader": "^8.1.0",
-    "css-loader": "^3.6.0",
-    "eslint": "5.16.0",
-    "html-webpack-plugin": "^4.3.0",
-    "node-sass": "^4.14.1",
-    "npm-run-all": "^4.1.5",
-    "rimraf": "^3.0.2",
-    "sass-loader": "^8.0.2",
-    "style-loader": "^1.2.1",
-    "webpack": "^4.43.0",
-    "webpack-cli": "^3.3.11",
-    "webpack-dev-server": "^3.11.0"
-  },
-  "scripts": {
-    "start:prod": "npm run build:prod && NODE_ENV=production node app.js",
-    "start:dev": "npm-run-all --parallel open:client",
-    "open:client": "webpack-dev-server --mode development --open",
-    "build": "npm run build:prod",
-    "build:dev": "webpack --mode development",
-    "build:prod": "webpack --mode production",
-    "clean": "rimraf .tmp && mkdirp .tmp/public",
-    "lift": "sails lift"
-  },
-  "main": "app.js",
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/Richie/chat-app.git"
-  },
-  "author": "Richie",
-  "license": "",
-  "engines": {
-    "node": "^8.11"
-  }
+    "name": "chat-app",
+    "private": true,
+    "version": "0.0.0",
+    "description": "a Sails application",
+    "keywords": [],
+    "dependencies": {
+        "@sailshq/connect-redis": "^3.2.1",
+        "@sailshq/lodash": "^3.10.3",
+        "@sailshq/socket.io-redis": "^5.2.0",
+        "grunt": "1.0.4",
+        "pubnub": "^4.28.0",
+        "pubnub-react": "^2.0.0",
+        "react": "^16.13.1",
+        "react-dom": "^16.13.1",
+        "sails": "^1.2.4",
+        "sails-hook-grunt": "^4.0.0",
+        "sails-hook-orm": "^2.1.1",
+        "sails-hook-sockets": "^2.0.0",
+        "sails-mongo": "^1.2.0"
+    },
+    "devDependencies": {
+        "@babel/core": "^7.10.2",
+        "@babel/preset-env": "^7.10.2",
+        "@babel/preset-react": "^7.10.1",
+        "babel-loader": "^8.1.0",
+        "css-loader": "^3.6.0",
+        "eslint": "5.16.0",
+        "html-webpack-plugin": "^4.3.0",
+        "node-sass": "^4.14.1",
+        "npm-run-all": "^4.1.5",
+        "rimraf": "^3.0.2",
+        "sass-loader": "^8.0.2",
+        "style-loader": "^1.2.1",
+        "webpack": "^4.43.0",
+        "webpack-cli": "^3.3.11",
+        "webpack-dev-server": "^3.11.0"
+    },
+    "scripts": {
+        "start:prod": "npm run build:prod && NODE_ENV=production node app.js",
+        "start:dev": "node app.js",
+        "dev-watch": "npm-run-all --parallel build:dev start:dev",
+        "open:client": "webpack-dev-server --mode development --open",
+        "build": "npm run build:prod",
+        "build:dev": "webpack --mode development --watch",
+        "build:prod": "webpack --mode production",
+        "clean": "rimraf .tmp && mkdirp .tmp/public",
+        "lift": "sails lift"
+    },
+    "main": "app.js",
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/Richie/chat-app.git"
+    },
+    "author": "Richie",
+    "license": "",
+    "engines": {
+        "node": "^8.11"
+    }
 }
