@@ -15,9 +15,7 @@ This app was originally generated on Tue Jun 16 2020 14:27:36 GMT-0400 (EDT) usi
 
 ### API
 
-**User**
-**Channel**
-**Message**
+**User** | **Channel** | **Message**
 
 ### Live Dev Site
 

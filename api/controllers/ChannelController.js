@@ -8,14 +8,29 @@
 module.exports = {
     createChannel: function (req, res) {
         Channel.create({
-            url: req.params.channelURL,
+            url: req.body.url,
             name: req.body.name || req.params.channelURL,
         })
             .fetch()
-            .then((channel) => res.send(channel));
+            .then((channel) => res.statusCode(201).send(channel));
     },
     updateChannel: function (req, res) {
-        // TODO
+        Channel.findOne({
+            url: req.params.channelURL,
+        }).then((channel) => {
+            if (!channel) {
+                res.send(500).send(
+                    "Could not match channel url: " + req.params.channelURL
+                );
+            } else {
+                Channel.updateOne({ url: req.params.channelURL })
+                    .set({
+                        url: req.body.url || channel.url,
+                        name: req.body.name || channel.name,
+                    })
+                    .then((channel) => res.send(channel));
+            }
+        });
     },
     postMessage: function (req, res) {
         // Create the message
@@ -25,7 +40,7 @@ module.exports = {
             channel: req.body.channelID,
         })
             .fetch()
-            .then((message) => res.send(message));
+            .then((message) => res.statusCode(201).send(message));
     },
     getChannel: function (req, res) {
         if (req.params.channelID) {

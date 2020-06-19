@@ -30,8 +30,9 @@ module.exports.routes = {
     /***************************************************************************
      *                    CHANNEL CONTROLLER ENDPOINTS                         *
      ***************************************************************************/
-    "POST /api/channel/:channelURL": "ChannelController.createChannel",
-    "POST /api/channel/:channelURL/post": "ChannelController.postMessage",
+    "POST /api/channel/": "ChannelController.createChannel",
+    "POST /api/channel/:channelURL/messages": "ChannelController.postMessage",
+    "PUT /api/channel/:channelURL": "ChannelController.updateChannel",
     "GET /api/channel/:channelURL?": "ChannelController.getChannel",
     "GET /api/channel/:channelURL/messages": "ChannelController.getMessages",
 

@@ -3,7 +3,7 @@ export function getAllChannels() {
 }
 
 export function postMessage(username, message, channel) {
-    const url = "/api/channel/" + channel.url + "/post";
+    const url = "/api/channel/" + channel.url + "/messages";
     return channelFetch(url, {
         method: "POST",
         body: JSON.stringify({
