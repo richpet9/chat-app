@@ -169,7 +169,7 @@ const App = () => {
                         setFloatingWindowContent(
                             <NewChannelForm
                                 changeChannel={(channel) => {
-                                    toggleFloatingWindow();
+                                    setFloatingWindow(false);
                                     changeChannel(channel);
                                 }}
                             />
