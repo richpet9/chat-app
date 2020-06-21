@@ -4,6 +4,7 @@ $margin: 24px;
 
 .message-input-container {
     background: #ffffff;
+    border-radius: 5px;
     width: calc(100% - #{2 * $margin});
     position: absolute;
     margin: 0 $margin;

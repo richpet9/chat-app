@@ -1,0 +1,19 @@
+@import "../../_defaults.scss";
+
+.floating-window {
+    position: absolute;
+    background-color: white;
+    font-size: 1rem;
+    padding: 16px;
+    border-radius: 5px;
+    box-shadow: $panelShadow;
+    opacity: 1;
+    top: 118px;
+    transform: scale(1);
+    transition: opacity 150ms ease-in, transform 130ms ease-in-out;
+
+    &.hidden {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+}

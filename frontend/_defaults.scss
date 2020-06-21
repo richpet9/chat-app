@@ -1,12 +1,19 @@
-$blue: #1c67ad;
+$lightblue: #4a9ecc;
+$blue: #3e8ad0;
 $darkblue: #194c7c;
 $grey: #8b9099;
 $lightgrey: #eef1f7;
+$lightergrey: #fafafdf7;
 $richblack: #051e35;
 
-$panelShadow: 0px 0px 8px 0.5px $lightgrey;
+$panelShadow: 0px 1px 3px
+    rgba(
+        $color: $richblack,
+        $alpha: 0.1,
+    );
+
 @mixin blueGradient {
-    background: rgb(62, 138, 208);
+    background: #3e8ad0;
     background: -moz-linear-gradient(
         337deg,
         rgba(62, 138, 208, 1) 0%,

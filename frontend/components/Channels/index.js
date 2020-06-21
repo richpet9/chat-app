@@ -2,7 +2,13 @@ import React from "react";
 
 import "./index.scss";
 
-const Channels = ({ channels, currentChannel, changeChannel, placeholder }) => {
+const Channels = ({
+    channels,
+    currentChannel,
+    changeChannel,
+    placeholder,
+    toggleFloatingWindow,
+}) => {
     if (placeholder) {
         return (
             <div className="channel-container">
@@ -29,10 +35,17 @@ const Channels = ({ channels, currentChannel, changeChannel, placeholder }) => {
                         }
                         onClick={() => changeChannel(channel)}
                     >
-                        <i className={"fas fa-hashtag"}></i>
+                        <i className="fas fa-hashtag"></i>
                         <span>{channel.name}</span>
                     </button>
                 ))}
+                <button
+                    className="new-channel-button channel-button"
+                    onClick={() => toggleFloatingWindow()}
+                >
+                    <i className="fas fa-plus"></i>
+                    <span>Add Channel</span>
+                </button>
             </div>
         );
     }

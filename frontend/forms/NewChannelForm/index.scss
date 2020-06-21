@@ -1,0 +1,78 @@
+@import "../../_defaults.scss";
+
+.new-channel.form {
+    min-width: 300px;
+
+    label.text {
+        display: block;
+        font-size: 0.85rem;
+        letter-spacing: 0.5px;
+        color: $richblack;
+        margin-top: 16px;
+        margin-bottom: 8px;
+    }
+
+    .input-icon-container {
+        position: relative;
+
+        input[type="text"] {
+            display: block;
+            outline: none;
+            border: none;
+            width: 100%;
+            font-size: 0.85rem;
+            padding: 6px 10px;
+            padding-left: 28px;
+            border-radius: 3px;
+            letter-spacing: 0.5px;
+            background: $lightergrey;
+            border: 2px solid $lightgrey;
+            transition: border 200ms ease-in;
+        }
+
+        span.fas {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            color: $grey;
+            font-size: 0.85rem;
+            transition: color 200ms ease-in;
+        }
+
+        input[type="text"]:focus {
+            border-color: $blue;
+
+            & ~ span.fas {
+                color: $blue;
+            }
+        }
+    }
+
+    input[type="submit"] {
+        display: block;
+        padding: 8px 16px;
+        border: none;
+        border-radius: 3px;
+        background: $blue;
+        color: white;
+        margin-top: 16px;
+        width: 100%;
+        font-size: 0.85rem;
+        font-weight: bold;
+        letter-spacing: 0.7px;
+        cursor: pointer;
+
+        &:hover,
+        &:active,
+        &:focus {
+            background: $darkblue;
+            box-shadow: $panelShadow;
+        }
+
+        &:disabled {
+            background: $grey;
+            box-shadow: none;
+            cursor: not-allowed;
+        }
+    }
+}

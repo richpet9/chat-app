@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import ReactDOM from "react-dom";
 import PubNub from "pubnub";
 import { PubNubProvider, usePubNub } from "pubnub-react";
@@ -7,12 +7,13 @@ import ChannelInfo from "./components/ChannelInfo";
 import MessagesBox from "./components/MessagesBox";
 import MessageInput from "./components/MessageInput";
 import BrandMark from "./components/BrandMark";
+import FloatingWindow from "./components/FloatingWindow";
+import NewChannelForm from "./forms/NewChannelForm";
 import {
     getAllChannels,
     postMessage,
     getChannelMessages,
 } from "./helpers/ChannelHelper";
-
 import "./index.scss";
 
 const pubnub = new PubNub({
@@ -27,6 +28,11 @@ const App = () => {
     const [message, setMessage] = useState("");
     const [currentChannel, setCurrentChannel] = useState(null);
     const [channels, setChannels] = useState(null);
+    const [floatingWindow, setFloatingWindow] = useState(false);
+    const [floatingWindowContent, setFloatingWindowContent] = useState(
+        <NewChannelForm />
+    );
+    const fwRef = useRef();
 
     // Send message function, everytime we press enter / hit send
     const sendMessage = (message) => {
@@ -70,6 +76,28 @@ const App = () => {
             // When we are changing to a null channel
             setCurrentChannel(null);
             setMessages([]);
+        }
+    };
+
+    const toggleFloatingWindow = () => {
+        // Callback function for when we click w floating window open
+        const handleClicks = (e) => {
+            // If we clicked outisde the floating window
+            if (fwRef.current && !fwRef.current.contains(e.target)) {
+                // Hide the window and remove the listener
+                setFloatingWindow(false);
+                document.removeEventListener("click", handleClicks);
+            }
+        };
+
+        // If floating window is open
+        if (floatingWindow) {
+            setFloatingWindow(false);
+            document.removeEventListener("click", handleClicks);
+        } else {
+            // Floating window is not open, so open it
+            setFloatingWindow(true);
+            document.addEventListener("click", handleClicks);
         }
     };
 
@@ -127,6 +155,9 @@ const App = () => {
 
     return (
         <div className="App">
+            <FloatingWindow show={floatingWindow} ref={fwRef}>
+                {floatingWindowContent}
+            </FloatingWindow>
             <div className="left-side-panel">
                 <BrandMark />
                 <Channels
@@ -134,6 +165,7 @@ const App = () => {
                     currentChannel={currentChannel} // TODO: move channel state to channels component
                     changeChannel={changeChannel}
                     placeholder={channels == null}
+                    toggleFloatingWindow={toggleFloatingWindow}
                 />
             </div>
             <div className="center-panel">
