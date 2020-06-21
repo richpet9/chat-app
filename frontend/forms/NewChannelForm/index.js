@@ -1,49 +1,62 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import FAInput from "../../components/FAInput";
+import { createChannel } from "../../helpers/ChannelHelper";
 import "./index.scss";
 
 const NewChannelForm = (props) => {
-    const [submitDisabled, setSubmitDisabled] = useState(true);
+    const [urlValid, setUrlValid] = useState(false);
+    const [nameValid, setNameValid] = useState(false);
+    const [formValid, setFormValid] = useState(false);
     const inputs = {
         url: useRef(),
         name: useRef(),
     };
 
+    // URL validation function
     const validateUrl = (str) => {
         const invalidChars = str.match(/[^a-zA-Z0-9-]/g);
         if (str.length < 3 || (invalidChars && invalidChars.length > 0)) {
+            setUrlValid(false);
             return false;
         }
 
+        setUrlValid(true);
         return true;
     };
 
+    // Name validation function
     const validateName = (str) => {
         if (str.length < 3 || str.length > 256) {
+            setNameValid(false);
             return false;
         }
 
+        setNameValid(true);
         return true;
     };
 
-    const checkInputs = () => {
-        for (let i = 0; i < Object.keys(inputs).length; i++) {
-            const input = inputs[Object.keys(inputs)[i]].current;
-            if (
-                input.value.length == 0 ||
-                input.className.includes("invalid")
-            ) {
-                setSubmitDisabled(true);
-                break;
-            }
+    const submitForm = () => {
+        if (formValid) {
+            createChannel(
+                inputs.url.current.value,
+                inputs.name.current.value
+            ).then((res) => console.log(res));
         }
     };
+
+    // Side effect: when the validity of our inputs changes, check the validity of the form
+    useEffect(() => {
+        if (nameValid && urlValid) {
+            setFormValid(true);
+        } else {
+            setFormValid(false);
+        }
+    }, [urlValid, nameValid]);
 
     return (
         <form
             className="new-channel form"
             action={"#" + (inputs.url.current ? inputs.url.current.value : "")}
-            onChange={checkInputs}
         >
             <div className="form-name">Create Channel</div>
 
@@ -73,7 +86,8 @@ const NewChannelForm = (props) => {
                 type="submit"
                 id="name"
                 value="CREATE CHANNEL"
-                disabled={submitDisabled}
+                disabled={!formValid}
+                onClick={submitForm}
             />
         </form>
     );

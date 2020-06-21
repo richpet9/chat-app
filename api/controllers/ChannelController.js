@@ -12,7 +12,7 @@ module.exports = {
             name: req.body.name || req.params.channelURL,
         })
             .fetch()
-            .then((channel) => res.statusCode(201).send(channel));
+            .then((channel) => res.status(201).send(channel));
     },
     updateChannel: function (req, res) {
         Channel.findOne({
