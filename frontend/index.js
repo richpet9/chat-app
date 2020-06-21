@@ -29,9 +29,7 @@ const App = () => {
     const [currentChannel, setCurrentChannel] = useState(null);
     const [channels, setChannels] = useState(null);
     const [floatingWindow, setFloatingWindow] = useState(false);
-    const [floatingWindowContent, setFloatingWindowContent] = useState(
-        <NewChannelForm />
-    );
+    const [floatingWindowContent, setFloatingWindowContent] = useState("");
     const fwRef = useRef();
 
     // Send message function, everytime we press enter / hit send
@@ -79,33 +77,35 @@ const App = () => {
         }
     };
 
+    // Toggle the floating window open and closed
     const toggleFloatingWindow = () => {
+        setFloatingWindow(!floatingWindow);
+    };
+
+    // Side effect: whenever we open or close the floating window, bind listeners
+    useEffect(() => {
         // Callback function for when we click w floating window open
         const handleClicks = (e) => {
             // If we clicked outisde the floating window
             if (fwRef.current && !fwRef.current.contains(e.target)) {
-                // Hide the window and remove the listener
+                // Hide the window and remove the
                 setFloatingWindow(false);
                 document.removeEventListener("click", handleClicks);
             }
         };
 
-        // If floating window is open
-        if (floatingWindow) {
-            setFloatingWindow(false);
+        if (!floatingWindow) {
             document.removeEventListener("click", handleClicks);
         } else {
-            // Floating window is not open, so open it
-            setFloatingWindow(true);
             document.addEventListener("click", handleClicks);
         }
-    };
+    }, [floatingWindow]);
 
-    // Whenever the channel list changes, if we don't have a current channel, set it based on URL
+    // If we don't have a current channel, set it based on URL
     useEffect(() => {
         // If we don't have a current channel but we do have some channels available
         if (!currentChannel && channels) {
-            const hash = window.location.hash;
+            const hash = window.location.hash.substring(1);
             if (channels.map((channel) => channel.url).includes(hash)) {
                 changeChannel(
                     channels.filter((channel) => channel.url == hash)[0]
@@ -151,7 +151,7 @@ const App = () => {
                 setChannels(channels);
             })
             .catch((error) => console.warn(error));
-    }, []);
+    }, [currentChannel]);
 
     return (
         <div className="App">
@@ -165,7 +165,17 @@ const App = () => {
                     currentChannel={currentChannel} // TODO: move channel state to channels component
                     changeChannel={changeChannel}
                     placeholder={channels == null}
-                    toggleFloatingWindow={toggleFloatingWindow}
+                    openNewChannelForm={() => {
+                        setFloatingWindowContent(
+                            <NewChannelForm
+                                changeChannel={(channel) => {
+                                    setFloatingWindow(false);
+                                    changeChannel(channel);
+                                }}
+                            />
+                        );
+                        toggleFloatingWindow();
+                    }}
                 />
             </div>
             <div className="center-panel">

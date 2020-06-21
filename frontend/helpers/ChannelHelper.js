@@ -19,6 +19,17 @@ export function getChannelMessages(channel) {
     return channelFetch(url);
 }
 
+export function createChannel(cUrl, cName) {
+    const url = "/api/channel/";
+    return channelFetch(url, {
+        method: "POST",
+        body: JSON.stringify({
+            url: cUrl,
+            name: cName,
+        }),
+    });
+}
+
 function channelFetch(url, options) {
     return new Promise((resolve, reject) => {
         fetch(url, options).then((res) => {

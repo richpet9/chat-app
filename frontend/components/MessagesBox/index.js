@@ -1,21 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef } from "react";
 
 import "./index.scss";
 
 const MessagesBox = ({ messages }) => {
-    const [height, setHeight] = useState(0);
+    const containerRef = useRef();
 
     useEffect(() => {
-        setHeight(document.getElementById("channel-info-bar").clientHeight);
-    }, []);
+        containerRef.current.scrollTo(0, containerRef.current.scrollHeight);
+    }, [messages]);
 
     return (
         <div
             className="messages-container"
-            style={{
-                height: window.innerHeight + "px",
-                top: height + "px",
-            }}
+            style={{ height: window.innerHeight - 104 }}
+            ref={containerRef}
         >
             {messages.map((message, messageIndex) => {
                 return (
