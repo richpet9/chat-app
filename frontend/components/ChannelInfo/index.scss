@@ -2,7 +2,8 @@
 
 .channel-info-container {
     width: 100%;
-    background: white;
+    background: rgba($color: white, $alpha: 0.9);
+    backdrop-filter: blur(3px);
     padding: 8px 24px;
     padding-bottom: 16px;
     box-shadow: $panelShadow;

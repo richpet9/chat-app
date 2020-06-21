@@ -1,14 +1,24 @@
 @import "../../_defaults.scss";
 
 .messages-container {
-    background: $lightgrey;
     width: 100%;
     display: flex;
-    justify-content: flex-end;
+    justify-content: flex-start;
     flex-direction: column;
-    bottom: 0;
-    padding-bottom: 104px;
+    padding-top: 72px;
     padding-left: 24px;
+    overflow-y: scroll;
+    position: absolute;
+    top: 0;
+    scroll-padding-bottom: 104px;
+
+    & > :first-child {
+        margin-top: auto !important;
+    }
+
+    & > :last-child {
+        margin-bottom: 100px !important;
+    }
 
     .message {
         align-self: flex-start;

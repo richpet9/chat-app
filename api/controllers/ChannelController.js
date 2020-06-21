@@ -19,7 +19,7 @@ module.exports = {
             url: req.params.channelURL,
         }).then((channel) => {
             if (!channel) {
-                res.send(500).send(
+                res.status(500).send(
                     "Could not match channel url: " + req.params.channelURL
                 );
             } else {
@@ -40,7 +40,7 @@ module.exports = {
             channel: req.body.channelID,
         })
             .fetch()
-            .then((message) => res.statusCode(201).send(message));
+            .then((message) => res.status(201).send(message));
     },
     getChannel: function (req, res) {
         if (req.params.channelID) {
