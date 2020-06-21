@@ -7,7 +7,7 @@ const Channels = ({
     currentChannel,
     changeChannel,
     placeholder,
-    toggleFloatingWindow,
+    openNewChannelForm,
 }) => {
     if (placeholder) {
         return (
@@ -41,7 +41,7 @@ const Channels = ({
                 ))}
                 <button
                     className="new-channel-button channel-button"
-                    onClick={() => toggleFloatingWindow()}
+                    onClick={openNewChannelForm}
                 >
                     <i className="fas fa-plus"></i>
                     <span>Add Channel</span>

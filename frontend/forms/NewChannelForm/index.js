@@ -40,7 +40,7 @@ const NewChannelForm = (props) => {
             createChannel(
                 inputs.url.current.value,
                 inputs.name.current.value
-            ).then((res) => console.log(res));
+            ).then((res) => props.changeChannel(res));
         }
     };
 
