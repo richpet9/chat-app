@@ -1,8 +1,14 @@
-@import "../../_defaults.scss";
+@import "../_defaults.scss";
 
 .new-channel.form {
     min-width: 300px;
+}
 
+.create-username.form {
+    min-width: 300px;
+}
+
+.form {
     label.text {
         display: block;
         font-size: 0.85rem;

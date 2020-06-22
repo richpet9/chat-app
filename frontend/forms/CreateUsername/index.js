@@ -35,7 +35,7 @@ const CreateUsername = (props) => {
     }, [usernameValid]);
 
     return (
-        <form className="new-channel form" action="#">
+        <form className="create-username form" action="#">
             <div className="form-name">Create Username</div>
 
             <label htmlFor="url" className="text">
