@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 
 import "./index.scss";
 
-const MessageInput = ({ message, setMessage, sendMessage }) => {
+const MessageInput = ({ sendMessage }) => {
+    const [message, setMessage] = useState("");
+
     return (
         <div className="message-input-container" id="message-input-bar">
             <input
@@ -15,6 +17,7 @@ const MessageInput = ({ message, setMessage, sendMessage }) => {
                         // Pressed enter
                         e.preventDefault();
                         sendMessage(message);
+                        setMessage("");
                     }
                 }}
             />
@@ -22,6 +25,7 @@ const MessageInput = ({ message, setMessage, sendMessage }) => {
                 onClick={(e) => {
                     e.preventDefault();
                     sendMessage(message);
+                    setMessage("");
                 }}
             >
                 <i className="fas fa-paper-plane"></i>

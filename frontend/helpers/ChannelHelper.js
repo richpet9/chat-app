@@ -2,7 +2,7 @@ export function getAllChannels() {
     return channelFetch("/api/channel");
 }
 
-export function postMessage(username, message, channel) {
+export function postMessage(username, message, channel, timeToken) {
     const url = "/api/channel/" + channel.url + "/messages";
     return channelFetch(url, {
         method: "POST",
@@ -10,6 +10,7 @@ export function postMessage(username, message, channel) {
             from: username,
             message: message,
             channelID: channel.id,
+            timeToken: timeToken,
         }),
     });
 }

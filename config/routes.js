@@ -23,8 +23,8 @@ module.exports.routes = {
     /***************************************************************************
      *                      USER CONTROLLER ENDPOINTS                          *
      ***************************************************************************/
-    "POST /api/user/:username": "UserController.createUsername",
-    "POST /api/user/:username/update": "UserController.updateUser",
+    "POST /api/user": "UserController.createUser",
+    "POST /api/user/:username": "UserController.updateUser",
     "GET /api/user/:username?": "UserController.getUsername",
 
     /***************************************************************************

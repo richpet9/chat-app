@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import FAInput from "../../components/FAInput";
 import { createChannel } from "../../helpers/ChannelHelper";
-import "./index.scss";
+import "../index.scss";
 
 const NewChannelForm = (props) => {
     const [urlValid, setUrlValid] = useState(false);
