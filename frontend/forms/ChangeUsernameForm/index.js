@@ -26,7 +26,7 @@ const ChangeUsernameForm = (props) => {
 
     const submitForm = () => {
         if (formValid) {
-            console.log("new username: " + inputs.username.current.value);
+            props.changeUser(inputs.username.current.value);
         }
     };
 

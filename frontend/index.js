@@ -18,7 +18,7 @@ import {
     postMessage,
     getChannelMessages,
 } from "./helpers/ChannelHelper";
-import { createUser } from "./helpers/UserHelper";
+import { createUser, changeUsername } from "./helpers/UserHelper";
 import "./index.scss";
 
 const pubnub = new PubNub({
@@ -48,6 +48,20 @@ const App = () => {
             })
             .catch((e) => {
                 console.warn("Error when registering user with database: " + e);
+            });
+    };
+
+    // Change the username
+    const changeUser = (str) => {
+        changeUsername(username, str)
+            .then((res) => {
+                console.log(res);
+                setFloatingWindow(false);
+                setUsername(str);
+                localStorage.setItem("username", str);
+            })
+            .catch((e) => {
+                console.warn("Error when changing sername: " + e);
             });
     };
 
@@ -230,7 +244,10 @@ const App = () => {
                     username={username}
                     openChangeUsernameForm={() => {
                         setFloatingWindowContent(
-                            <ChangeUsernameForm username={username} />
+                            <ChangeUsernameForm
+                                username={username}
+                                changeUser={changeUser}
+                            />
                         );
                         toggleFloatingWindow();
                     }}
