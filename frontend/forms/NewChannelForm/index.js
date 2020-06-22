@@ -84,7 +84,6 @@ const NewChannelForm = (props) => {
 
             <input
                 type="submit"
-                id="name"
                 value="CREATE CHANNEL"
                 disabled={!formValid}
                 onClick={submitForm}
