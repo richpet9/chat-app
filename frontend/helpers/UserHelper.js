@@ -6,6 +6,14 @@ export function createUser(username) {
     });
 }
 
+export function changeUsername(username, newUsername) {
+    const url = "/api/user/" + username;
+    return userFetch(url, {
+        method: "POST",
+        body: JSON.stringify({ newUsername: newUsername }),
+    });
+}
+
 function userFetch(url, options) {
     return new Promise((resolve, reject) => {
         fetch(url, options).then((res) => {

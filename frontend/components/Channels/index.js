@@ -9,22 +9,10 @@ const Channels = ({
     placeholder,
     openNewChannelForm,
 }) => {
-    if (placeholder) {
-        return (
-            <div className="channel-container">
-                {["medium", "small", "large"].map((size) => (
-                    <span
-                        key={size}
-                        className={"placeholder " + size}
-                        style={{ display: "block" }}
-                    />
-                ))}
-            </div>
-        );
-    } else {
-        return (
-            <div className="channel-container">
-                {channels.map((channel) => (
+    return (
+        <div className="channel-container">
+            {channels &&
+                channels.map((channel) => (
                     <button
                         key={channel.id}
                         className={
@@ -39,16 +27,15 @@ const Channels = ({
                         <span>{channel.name}</span>
                     </button>
                 ))}
-                <button
-                    className="new-channel-button channel-button"
-                    onClick={openNewChannelForm}
-                >
-                    <i className="fas fa-plus"></i>
-                    <span>Add Channel</span>
-                </button>
-            </div>
-        );
-    }
+            <button
+                className="new-channel-button channel-button"
+                onClick={openNewChannelForm}
+            >
+                <i className="fas fa-plus"></i>
+                <span>Add Channel</span>
+            </button>
+        </div>
+    );
 };
 
 export default Channels;

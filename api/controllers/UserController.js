@@ -17,9 +17,8 @@ module.exports = {
     updateUser: function (req, res) {
         User.updateOne({ username: req.params.username })
             .set({
-                username: req.body.username,
+                username: req.body.newUsername,
             })
-            .fetch()
             .then((user) => {
                 res.status(200).send(user);
             });
