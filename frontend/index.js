@@ -201,7 +201,6 @@ const App = () => {
                     channels={channels}
                     currentChannel={currentChannel} // TODO: move channel state to channels component
                     changeChannel={changeChannel}
-                    placeholder={channels == null}
                     openNewChannelForm={() => {
                         setFloatingWindowContent(
                             <NewChannelForm

@@ -26,6 +26,10 @@
             top: 10px;
             left: 24px;
             font-size: 1.1rem;
+
+            &.placeholder {
+                color: $grey;
+            }
         }
     }
 

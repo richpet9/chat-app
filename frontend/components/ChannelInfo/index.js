@@ -6,7 +6,11 @@ const ChannelInfo = ({ channel }) => {
     return (
         <div className="channel-info-container" id="channel-info-bar">
             <div className="channel-name">
-                <i className="fas fa-hashtag"></i>
+                <i
+                    className={
+                        "fas fa-hashtag " + (channel ? "" : "placeholder")
+                    }
+                ></i>
                 <span className={channel ? "" : "placeholder medium"}>
                     {channel ? channel.name : ""}
                 </span>
