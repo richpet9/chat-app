@@ -11,21 +11,22 @@ const Channels = ({
 }) => {
     return (
         <div className="channel-container">
-            {channels.map((channel) => (
-                <button
-                    key={channel.id}
-                    className={
-                        "channel-button " +
-                        (currentChannel && channel.id == currentChannel.id
-                            ? "active"
-                            : "")
-                    }
-                    onClick={() => changeChannel(channel)}
-                >
-                    <i className="fas fa-hashtag"></i>
-                    <span>{channel.name}</span>
-                </button>
-            ))}
+            {channels &&
+                channels.map((channel) => (
+                    <button
+                        key={channel.id}
+                        className={
+                            "channel-button " +
+                            (currentChannel && channel.id == currentChannel.id
+                                ? "active"
+                                : "")
+                        }
+                        onClick={() => changeChannel(channel)}
+                    >
+                        <i className="fas fa-hashtag"></i>
+                        <span>{channel.name}</span>
+                    </button>
+                ))}
             <button
                 className="new-channel-button channel-button"
                 onClick={openNewChannelForm}
