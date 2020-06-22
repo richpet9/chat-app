@@ -9,28 +9,37 @@ import MessageInput from "./components/MessageInput";
 import BrandMark from "./components/BrandMark";
 import FloatingWindow from "./components/FloatingWindow";
 import NewChannelForm from "./forms/NewChannelForm";
+import CreateUsername from "./forms/CreateUsername";
 import {
     getAllChannels,
     postMessage,
     getChannelMessages,
 } from "./helpers/ChannelHelper";
+import { createUser } from "./helpers/UserHelper";
 import "./index.scss";
 
 const pubnub = new PubNub({
     publishKey: "pub-c-40ab95dd-4ce4-4968-86a4-39fa28f1c3b5",
     subscribeKey: "sub-c-7baebe72-b0b7-11ea-af7b-9a67fd50bac3",
-    uuid: "test-user",
+    uuid: "unnamed user",
 });
 
 const App = () => {
     const pubnub = usePubNub();
+    const [username, setUsername] = useState(null);
     const [messages, setMessages] = useState([]);
-    const [message, setMessage] = useState("");
     const [currentChannel, setCurrentChannel] = useState(null);
     const [channels, setChannels] = useState(null);
     const [floatingWindow, setFloatingWindow] = useState(false);
     const [floatingWindowContent, setFloatingWindowContent] = useState("");
     const fwRef = useRef();
+
+    const createUsername = (str) => {
+        // createUser(str).then((res) => console.log(res));
+        pubnub.setUUID(str);
+        setUsername(str);
+        setFloatingWindow(false);
+    };
 
     // Send message function, everytime we press enter / hit send
     const sendMessage = (message) => {
@@ -47,10 +56,7 @@ const App = () => {
                     // for the first time made it very difficult to figure out how to implement pubnub
                     // effeciently on the back-end, so instead we just store our own history with the channel
                     // and user configs.
-                    postMessage("text-user", message, currentChannel);
-
-                    // Set the message input bar to blank
-                    setMessage("");
+                    postMessage(pubnub.getUUID(), message, currentChannel);
                 }
             }
         );
@@ -60,8 +66,6 @@ const App = () => {
     const changeChannel = (channel) => {
         // If we are changing to a channel (not null)
         if (channel) {
-            // Set the message input to nothing
-            setMessage("");
             // Set the current channel to what we wanted
             setCurrentChannel(channel);
             // Get the message history from the API
@@ -82,6 +86,15 @@ const App = () => {
         setFloatingWindow(!floatingWindow);
     };
 
+    useEffect(() => {
+        if (!username) {
+            setFloatingWindowContent(
+                <CreateUsername createUsername={createUsername} />
+            );
+            setFloatingWindow(true);
+        }
+    }, []);
+
     // Side effect: whenever we open or close the floating window, bind listeners
     useEffect(() => {
         // Callback function for when we click w floating window open
@@ -97,9 +110,42 @@ const App = () => {
         if (!floatingWindow) {
             document.removeEventListener("click", handleClicks);
         } else {
-            document.addEventListener("click", handleClicks);
+            // Bind the click-anywhere-and-close event if there is a username
+            if (username) {
+                document.addEventListener("click", handleClicks);
+            }
         }
     }, [floatingWindow]);
+
+    // This can be done better-- but rebuild the messages function w new messages
+    useEffect(() => {
+        pubnub.addListener({
+            message: (messageEvent) => {
+                console.log(messageEvent);
+
+                setMessages([
+                    ...messages,
+                    {
+                        from: messageEvent.publisher,
+                        message: messageEvent.message,
+                        timeToken: messageEvent.timetoken,
+                    },
+                ]);
+            },
+        });
+    }, [messages]);
+
+    // // Subscribe to new channels as they come
+    useEffect(() => {
+        // If we have channels, subscribe to all of them on pubnub
+        if (channels) {
+            pubnub.subscribe({
+                channels: channels.map((channel) => channel.url),
+            });
+        }
+        // When this component unmounts, unsub from all the channels
+        return () => pubnub.unsubscribeAll();
+    }, [channels]);
 
     // If we don't have a current channel, set it based on URL
     useEffect(() => {
@@ -116,34 +162,7 @@ const App = () => {
         }
     }, [channels]);
 
-    // This can be done better-- but rebuild the messages function w new messages
-    useEffect(() => {
-        pubnub.addListener({
-            message: (messageEvent) => {
-                setMessages([
-                    ...messages,
-                    {
-                        from: messageEvent.publisher,
-                        message: messageEvent.message,
-                    },
-                ]);
-            },
-        });
-    }, [messages]);
-
-    // Subscribe to new channels as they come
-    useEffect(() => {
-        // If we have channels, subscribe to all of them on pubnub
-        if (channels) {
-            pubnub.subscribe({
-                channels: channels.map((channel) => channel.url),
-            });
-        }
-        // When this component unmounts, unsub from all the channels
-        return () => pubnub.unsubscribeAll();
-    }, [channels]);
-
-    // Fetch Channels side effect
+    // // Fetch Channels side effect
     useEffect(() => {
         // Get all the channels when the app first mounts
         getAllChannels()
@@ -158,6 +177,7 @@ const App = () => {
             <FloatingWindow show={floatingWindow} ref={fwRef}>
                 {floatingWindowContent}
             </FloatingWindow>
+            {!username && <div className="full-screen-blank"></div>}
             <div className="left-side-panel">
                 <BrandMark />
                 <Channels
@@ -181,11 +201,7 @@ const App = () => {
             <div className="center-panel">
                 <ChannelInfo channel={currentChannel} />
                 <MessagesBox messages={messages} />
-                <MessageInput
-                    message={message}
-                    setMessage={setMessage}
-                    sendMessage={sendMessage}
-                />
+                <MessageInput sendMessage={sendMessage} />
             </div>
         </div>
     );

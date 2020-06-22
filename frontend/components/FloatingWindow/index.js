@@ -6,15 +6,20 @@ const FloatingWindow = forwardRef((props, ref) => {
     const [left, setLeft] = useState(0);
     const [zIndex, setzIndex] = useState(10);
     const [shouldShow, setShouldShow] = useState(false);
+    const [int, setInt] = useState(null);
 
     useEffect(() => {
+        if (int) {
+            clearTimeout(int);
+        }
+
         if (props.show) {
             setLeft(window.innerWidth / 2 - ref.current.clientWidth / 2);
             setzIndex(10);
             setShouldShow(true);
         } else {
             setShouldShow(false);
-            setTimeout(() => setzIndex(-999), 150);
+            setInt(setTimeout(() => setzIndex(-999), 150));
         }
     }, [props.show]);
 

@@ -8,10 +8,10 @@
 module.exports = {
     createUser: function (req, res) {
         // TODO: Add username to database, send OK code with username back to frontend
-        User.create({ username: req.params.username })
+        User.create({ username: req.body.username })
             .fetch()
-            .then((thing) => {
-                res.status(200).send(thing);
+            .then((user) => {
+                res.status(201).send(user);
             });
     },
     updateUser: function (req, res) {
