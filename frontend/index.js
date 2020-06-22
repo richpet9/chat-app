@@ -41,6 +41,7 @@ const App = () => {
                 pubnub.setUUID(str);
                 setUsername(str);
                 setFloatingWindow(false);
+                localStorage.setItem("username", str);
             })
             .catch((e) => {
                 console.warn("Error when registering user with database: " + e);
@@ -97,12 +98,17 @@ const App = () => {
         setFloatingWindow(!floatingWindow);
     };
 
+    // The first side effect: when we mount up, check if we are logged in / have a username stored locally
     useEffect(() => {
         if (!username) {
-            setFloatingWindowContent(
-                <CreateUsername createUsername={createUsername} />
-            );
-            setFloatingWindow(true);
+            if (!localStorage.getItem("username")) {
+                setFloatingWindowContent(
+                    <CreateUsername createUsername={createUsername} />
+                );
+                setFloatingWindow(true);
+            } else {
+                setUsername(localStorage.getItem("username"));
+            }
         }
     }, []);
 
