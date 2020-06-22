@@ -17,6 +17,7 @@ import {
 } from "./helpers/ChannelHelper";
 import { createUser } from "./helpers/UserHelper";
 import "./index.scss";
+import PageHide from "./components/PageHide";
 
 const pubnub = new PubNub({
     publishKey: "pub-c-40ab95dd-4ce4-4968-86a4-39fa28f1c3b5",
@@ -35,7 +36,11 @@ const App = () => {
     const fwRef = useRef();
 
     const createUsername = (str) => {
-        // createUser(str).then((res) => console.log(res));
+        createUser(str)
+            .then((res) => console.log(res))
+            .catch((e) => {
+                console.warn("Error when registering user with database: " + e);
+            });
         pubnub.setUUID(str);
         setUsername(str);
         setFloatingWindow(false);
@@ -177,7 +182,9 @@ const App = () => {
             <FloatingWindow show={floatingWindow} ref={fwRef}>
                 {floatingWindowContent}
             </FloatingWindow>
-            {!username && <div className="full-screen-blank"></div>}
+
+            <PageHide show={!username} />
+
             <div className="left-side-panel">
                 <BrandMark />
                 <Channels
@@ -198,6 +205,7 @@ const App = () => {
                     }}
                 />
             </div>
+
             <div className="center-panel">
                 <ChannelInfo channel={currentChannel} />
                 <MessagesBox messages={messages} />
