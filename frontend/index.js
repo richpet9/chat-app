@@ -37,13 +37,14 @@ const App = () => {
 
     const createUsername = (str) => {
         createUser(str)
-            .then((res) => console.log(res))
+            .then((res) => {
+                pubnub.setUUID(str);
+                setUsername(str);
+                setFloatingWindow(false);
+            })
             .catch((e) => {
                 console.warn("Error when registering user with database: " + e);
             });
-        pubnub.setUUID(str);
-        setUsername(str);
-        setFloatingWindow(false);
     };
 
     // Send message function, everytime we press enter / hit send
