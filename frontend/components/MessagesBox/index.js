@@ -19,15 +19,23 @@ const MessagesBox = ({ messages }) => {
                 const date = new Date(message.timeToken);
                 let hours = date.getHours();
                 let half = "AM";
-                if (hours > 12) {
+                if (hours >= 12) {
                     half = "PM";
-                    hours = hours - 12;
+                    if (hours > 12) {
+                        hours = hours - 12;
+                    }
                 }
-                const dateString = `${hours}:${date.getMinutes()} ${half}`;
+                let minutes = date.getMinutes();
+                if (minutes < 10) {
+                    minutes = "0" + date.getMinutes();
+                }
+
+                const dateString = `${hours}:${minutes} ${half}`;
+
                 return (
                     <div key={`message-${messageIndex}`} className="message">
                         <span className="message-from">{message.from}</span>
-                        {/* <span className="message-time">{dateString}</span> */}
+                        <span className="message-time">{dateString}</span>
                         <div className="message-text">{message.message}</div>
                     </div>
                 );

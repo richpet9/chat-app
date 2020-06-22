@@ -62,7 +62,12 @@ const App = () => {
                     // for the first time made it very difficult to figure out how to implement pubnub
                     // effeciently on the back-end, so instead we just store our own history with the channel
                     // and user configs.
-                    postMessage(pubnub.getUUID(), message, currentChannel);
+                    postMessage(
+                        pubnub.getUUID(),
+                        message,
+                        currentChannel,
+                        response.timetoken / 10000
+                    );
                 }
             }
         );
@@ -127,14 +132,12 @@ const App = () => {
     useEffect(() => {
         pubnub.addListener({
             message: (messageEvent) => {
-                console.log(messageEvent);
-
                 setMessages([
                     ...messages,
                     {
                         from: messageEvent.publisher,
                         message: messageEvent.message,
-                        timeToken: messageEvent.timetoken,
+                        timeToken: messageEvent.timetoken / 10000,
                     },
                 ]);
             },

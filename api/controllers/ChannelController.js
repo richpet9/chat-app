@@ -38,6 +38,7 @@ module.exports = {
             from: req.body.from,
             message: req.body.message,
             channel: req.body.channelID,
+            timeToken: req.body.timeToken,
         })
             .fetch()
             .then((message) => res.status(201).send(message));
