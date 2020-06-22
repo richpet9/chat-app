@@ -8,8 +8,11 @@ import MessagesBox from "./components/MessagesBox";
 import MessageInput from "./components/MessageInput";
 import BrandMark from "./components/BrandMark";
 import FloatingWindow from "./components/FloatingWindow";
+import PageHide from "./components/PageHide";
+import UserControl from "./components/UserControl";
 import NewChannelForm from "./forms/NewChannelForm";
-import CreateUsername from "./forms/CreateUsername";
+import CreateUsernameForm from "./forms/CreateUsernameForm";
+import ChangeUsernameForm from "./forms/ChangeUsernameForm";
 import {
     getAllChannels,
     postMessage,
@@ -17,7 +20,6 @@ import {
 } from "./helpers/ChannelHelper";
 import { createUser } from "./helpers/UserHelper";
 import "./index.scss";
-import PageHide from "./components/PageHide";
 
 const pubnub = new PubNub({
     publishKey: "pub-c-40ab95dd-4ce4-4968-86a4-39fa28f1c3b5",
@@ -35,6 +37,7 @@ const App = () => {
     const [floatingWindowContent, setFloatingWindowContent] = useState("");
     const fwRef = useRef();
 
+    // Create a username
     const createUsername = (str) => {
         createUser(str)
             .then((res) => {
@@ -46,6 +49,16 @@ const App = () => {
             .catch((e) => {
                 console.warn("Error when registering user with database: " + e);
             });
+    };
+
+    // Log out the current user
+    const logoutUser = () => {
+        localStorage.clear("username");
+        setUsername(null);
+        setFloatingWindowContent(
+            <CreateUsernameForm createUsername={createUsername} />
+        );
+        setFloatingWindow(true);
     };
 
     // Send message function, everytime we press enter / hit send
@@ -103,7 +116,7 @@ const App = () => {
         if (!username) {
             if (!localStorage.getItem("username")) {
                 setFloatingWindowContent(
-                    <CreateUsername createUsername={createUsername} />
+                    <CreateUsernameForm createUsername={createUsername} />
                 );
                 setFloatingWindow(true);
             } else {
@@ -212,6 +225,16 @@ const App = () => {
                         );
                         toggleFloatingWindow();
                     }}
+                />
+                <UserControl
+                    username={username}
+                    openChangeUsernameForm={() => {
+                        setFloatingWindowContent(
+                            <ChangeUsernameForm username={username} />
+                        );
+                        toggleFloatingWindow();
+                    }}
+                    logoutUser={logoutUser}
                 />
             </div>
 

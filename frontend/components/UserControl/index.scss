@@ -1,0 +1,69 @@
+@import "../../_defaults.scss";
+
+.user-container {
+    position: absolute;
+    bottom: 0;
+    padding: 24px;
+    color: white;
+
+    .username-button {
+        display: block;
+        position: relative;
+        width: 100%;
+        background: none;
+        outline: none;
+        border: none;
+        -webkit-appearance: none;
+        cursor: pointer;
+        padding: 8px;
+        text-align: left;
+        font-size: 0.85rem;
+        color: white;
+        font-weight: bold;
+        letter-spacing: 0.7px;
+
+        * {
+            position: relative;
+
+            &::after {
+                content: "";
+                display: block;
+                position: absolute;
+                top: -2px;
+                left: -6px;
+                width: calc(100% + 12px);
+                height: calc(100% + 4px);
+                border-radius: 10px;
+                background-color: rgba($color: $lightgrey, $alpha: 0);
+                transition: background-color ease-in 100ms,
+                    border-radius ease-in-out 150ms;
+            }
+        }
+
+        &.active {
+            *::after {
+                background-color: rgba($color: $lightgrey, $alpha: 0.2);
+                border-radius: 5px;
+            }
+        }
+
+        &:hover {
+            *::after {
+                background-color: rgba($color: $lightgrey, $alpha: 0.3);
+                border-radius: 5px;
+            }
+        }
+
+        .fas,
+        .fa {
+            margin-right: 18px;
+
+            &::after {
+                top: -4px;
+                left: -5px;
+                width: calc(100% + 10px);
+                height: calc(100% + 8px);
+            }
+        }
+    }
+}

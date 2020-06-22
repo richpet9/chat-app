@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import FAInput from "../../components/FAInput";
 
-const CreateUsername = (props) => {
+const ChangeUsernameForm = (props) => {
     const [usernameValid, setUsernameValid] = useState(false);
     const [formValid, setFormValid] = useState(false);
     const inputs = {
@@ -15,13 +15,18 @@ const CreateUsername = (props) => {
             return false;
         }
 
+        if (str == props.username) {
+            setUsernameValid(false);
+            return false;
+        }
+
         setUsernameValid(true);
         return true;
     };
 
     const submitForm = () => {
         if (formValid) {
-            props.createUsername(inputs.username.current.value);
+            console.log("new username: " + inputs.username.current.value);
         }
     };
 
@@ -35,14 +40,14 @@ const CreateUsername = (props) => {
     }, [usernameValid]);
 
     return (
-        <form className="create-username form" action="#">
-            <div className="form-name">Create Username</div>
+        <form className="change-username form" action="#">
+            <div className="form-name">Change Username</div>
 
             <label htmlFor="url" className="text">
-                Username
+                New Username
             </label>
             <FAInput
-                placeholder="Keanu"
+                placeholder={props.username}
                 id="url"
                 FAIcon="fa-user"
                 validate={validateUsername}
@@ -60,4 +65,4 @@ const CreateUsername = (props) => {
     );
 };
 
-export default CreateUsername;
+export default ChangeUsernameForm;
