@@ -23,10 +23,14 @@ module.exports = {
                 res.status(200).send(user);
             });
     },
-    getUsername: function (req, res) {
+    getUser: function (req, res) {
         if (req.params.username) {
             User.findOne({ username: req.params.username }).then((user) => {
-                res.send(user);
+                if (!user) {
+                    res.status(404).send("No user found.");
+                } else {
+                    res.status(200).send(user);
+                }
             });
         } else {
             User.find().then((users) => {

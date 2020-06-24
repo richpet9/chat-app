@@ -18,7 +18,7 @@ import {
     postMessage,
     getChannelMessages,
 } from "./helpers/ChannelHelper";
-import { createUser, changeUsername } from "./helpers/UserHelper";
+import { createUser, changeUsername, getUser } from "./helpers/UserHelper";
 import "./index.scss";
 
 const pubnub = new PubNub({
@@ -134,7 +134,20 @@ const App = () => {
                 );
                 setFloatingWindow(true);
             } else {
-                setUsername(localStorage.getItem("username"));
+                getUser(localStorage.getItem("username"))
+                    .then((user) => {
+                        setUsername(user.username);
+                        pubnub.setUUID(user.username);
+                    })
+                    .catch((e) => {
+                        localStorage.clear("username");
+                        setFloatingWindowContent(
+                            <CreateUsernameForm
+                                createUsername={createUsername}
+                            />
+                        );
+                        setFloatingWindow(true);
+                    });
             }
         }
     }, []);

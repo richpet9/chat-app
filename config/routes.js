@@ -25,7 +25,7 @@ module.exports.routes = {
      ***************************************************************************/
     "POST /api/user": "UserController.createUser",
     "POST /api/user/:username": "UserController.updateUser",
-    "GET /api/user/:username?": "UserController.getUsername",
+    "GET /api/user/:username?": "UserController.getUser",
 
     /***************************************************************************
      *                    CHANNEL CONTROLLER ENDPOINTS                         *
