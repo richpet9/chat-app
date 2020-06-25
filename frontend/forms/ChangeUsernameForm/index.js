@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import FAInput from "../../components/FAInput";
+import { getUser } from "../../helpers/UserHelper";
 
 const ChangeUsernameForm = (props) => {
     const [usernameValid, setUsernameValid] = useState(false);
@@ -10,18 +11,33 @@ const ChangeUsernameForm = (props) => {
 
     // Name validation function
     const validateUsername = (str) => {
-        if (str.length < 3 || str.length > 256) {
-            setUsernameValid(false);
-            return false;
-        }
-
-        if (str == props.username) {
-            setUsernameValid(false);
-            return false;
-        }
-
-        setUsernameValid(true);
-        return true;
+        return new Promise((resolve, reject) => {
+            if (str.length == 0) {
+                reject("Username is required.");
+                setUsernameValid(false);
+            } else {
+                getUser(str)
+                    .then((user) => {
+                        // This username is taken
+                        setUsernameValid(false);
+                        reject("Username is taken.");
+                    })
+                    .catch((e) => {
+                        // Username is available
+                        // Check length requirements
+                        if (str.length < 3 || str.length > 256) {
+                            setUsernameValid(false);
+                            reject(
+                                "Username must be longer than 3 characters and less than 256."
+                            );
+                        } else {
+                            // If length is not an issue, return good
+                            setUsernameValid(true);
+                            resolve(true);
+                        }
+                    });
+            }
+        });
     };
 
     const submitForm = () => {

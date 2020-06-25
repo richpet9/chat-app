@@ -14,25 +14,39 @@ const NewChannelForm = (props) => {
 
     // URL validation function
     const validateUrl = (str) => {
-        const invalidChars = str.match(/[^a-zA-Z0-9-]/g);
-        if (str.length < 3 || (invalidChars && invalidChars.length > 0)) {
-            setUrlValid(false);
-            return false;
-        }
-
-        setUrlValid(true);
-        return true;
+        return new Promise((resolve, reject) => {
+            const invalidChars = str.match(/[^a-zA-Z0-9-]/g);
+            if (invalidChars && invalidChars.length > 0) {
+                setUrlValid(false);
+                reject(
+                    "URL cannot contain the characters: " +
+                        invalidChars.join(" ")
+                );
+            } else if (str.length < 3 || str.length > 256) {
+                setUrlValid(false);
+                reject(
+                    "URL cannot be less than 3 characters or more than 256."
+                );
+            } else {
+                setUrlValid(true);
+                resolve(true);
+            }
+        });
     };
 
     // Name validation function
     const validateName = (str) => {
-        if (str.length < 3 || str.length > 256) {
-            setNameValid(false);
-            return false;
-        }
-
-        setNameValid(true);
-        return true;
+        return new Promise((resolve, reject) => {
+            if (str.length < 3 || str.length > 256) {
+                setNameValid(false);
+                reject(
+                    "Channel name cannot be less than 3 characters or more than 256."
+                );
+            } else {
+                setNameValid(true);
+                resolve(true);
+            }
+        });
     };
 
     const submitForm = () => {

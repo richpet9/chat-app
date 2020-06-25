@@ -3,6 +3,25 @@
 .input-icon-container {
     position: relative;
 
+    .error-msg {
+        position: absolute;
+        font-size: 0.85rem;
+        bottom: 40px;
+        background: white;
+        border-radius: 5px;
+        border: 1px solid $lightgrey;
+        padding: 6px 8px;
+        color: #ff5656;
+        opacity: 1;
+        transform: translate(0);
+        transition: all 100ms ease-in;
+
+        &.hidden {
+            opacity: 0;
+            transform: translate(0 8px);
+        }
+    }
+
     input[type="text"] {
         display: block;
         outline: none;

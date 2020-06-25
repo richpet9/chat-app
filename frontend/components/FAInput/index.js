@@ -4,18 +4,29 @@ import "./index.scss";
 const FAInput = forwardRef(({ id, placeholder, FAIcon, validate }, ref) => {
     const [value, setValue] = useState("");
     const [valid, setValid] = useState(true);
+    const [error, setError] = useState(null);
 
     const validator = (str) => {
-        if (validate(str)) {
-            setValid(true);
-        } else {
-            setValid(false);
-        }
+        validate(str)
+            .then((success) => {
+                setValid(true);
+                setError(null);
+            })
+            .catch((error) => {
+                setValid(false);
+                setError(error);
+            });
+
         setValue(str);
     };
 
     return (
         <div className="input-icon-container">
+            {
+                <div className={"error-msg " + (error ? "" : "hidden")}>
+                    {error}
+                </div>
+            }
             <input
                 type="text"
                 placeholder={placeholder}
