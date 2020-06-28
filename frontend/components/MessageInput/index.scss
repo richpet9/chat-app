@@ -39,4 +39,13 @@ $margin: 24px;
             color: $darkblue;
         }
     }
+
+    .message-cooldown {
+        position: absolute;
+        left: 8px;
+        bottom: calc(100% + 4px);
+        font-size: 0.85rem;
+        color: $grey;
+        font-weight: lighter;
+    }
 }
