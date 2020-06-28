@@ -18,7 +18,7 @@ import {
     postMessage,
     getChannelMessages,
 } from "./helpers/ChannelHelper";
-import { createUser, changeUsername, getUser } from "./helpers/UserHelper";
+import { getUser } from "./helpers/UserHelper";
 import "./index.scss";
 
 const pubnub = new PubNub({
