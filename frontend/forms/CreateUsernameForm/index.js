@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import FAInput from "../../components/FAInput";
-import { getUser } from "../../helpers/UserHelper";
+import { getUser, createUser } from "../../helpers/UserHelper";
 
 const CreateUsernameForm = (props) => {
     const [usernameValid, setUsernameValid] = useState(false);
@@ -42,7 +42,13 @@ const CreateUsernameForm = (props) => {
 
     const submitForm = () => {
         if (formValid) {
-            props.createUsername(inputs.username.current.value);
+            const str = inputs.username.current.value;
+            createUser(str)
+                .then(() => {
+                    localStorage.setItem("username", str);
+                    props.submitHook(inputs);
+                })
+                .catch((error) => console.warn(error));
         }
     };
 

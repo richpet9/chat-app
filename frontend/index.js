@@ -33,46 +33,29 @@ const App = () => {
     const [messages, setMessages] = useState([]);
     const [currentChannel, setCurrentChannel] = useState(null);
     const [channels, setChannels] = useState(null);
-    const [floatingWindow, setFloatingWindow] = useState(false);
-    const [floatingWindowContent, setFloatingWindowContent] = useState("");
+    const [fwShow, setFwShow] = useState(null);
     const fwRef = useRef();
 
-    // Create a username
-    const createUsername = (str) => {
-        createUser(str)
-            .then((res) => {
-                pubnub.setUUID(str);
-                setUsername(str);
-                setFloatingWindow(false);
-                localStorage.setItem("username", str);
-            })
-            .catch((e) => {
-                console.warn("Error when registering user with database: " + e);
-            });
+    const onCreateUsername = ({ username }) => {
+        setUsername(username.current.value);
+        pubnub.setUUID(username.current.value);
+        setFwShow(null);
     };
 
-    // Change the username
-    const changeUser = (str) => {
-        changeUsername(username, str)
-            .then((res) => {
-                console.log(res);
-                setFloatingWindow(false);
-                setUsername(str);
-                localStorage.setItem("username", str);
-            })
-            .catch((e) => {
-                console.warn("Error when changing sername: " + e);
-            });
+    const onNewChannel = ({ id, name, url }) => {
+        changeChannel({
+            id: id,
+            name: name.current.value,
+            url: url.current.value,
+        });
+        setFwShow(null);
     };
 
     // Log out the current user
     const logoutUser = () => {
         localStorage.clear("username");
         setUsername(null);
-        setFloatingWindowContent(
-            <CreateUsernameForm createUsername={createUsername} />
-        );
-        setFloatingWindow(true);
+        setFwShow(<CreateUsernameForm submitHook={onCreateUsername} />);
     };
 
     // Send message function, everytime we press enter / hit send
@@ -108,71 +91,38 @@ const App = () => {
             // Set the current channel to what we wanted
             setCurrentChannel(channel);
             // Get the message history from the API
-            getChannelMessages(channel).then((messages) =>
+            getChannelMessages(channel).then((messages) => {
                 // Set the messages to the message history
-                setMessages(messages)
-            );
+                setMessages(messages);
+                //TODO: this is an uncaught promise
+            });
             window.location.hash = channel.url;
         } else {
             // When we are changing to a null channel
             setCurrentChannel(null);
             setMessages([]);
+            setFwShow(<NewChannelForm submitHook={onNewChannel} />);
         }
-    };
-
-    // Toggle the floating window open and closed
-    const toggleFloatingWindow = () => {
-        setFloatingWindow(!floatingWindow);
     };
 
     // The first side effect: when we mount up, check if we are logged in / have a username stored locally
     useEffect(() => {
         if (!username) {
-            if (!localStorage.getItem("username")) {
-                setFloatingWindowContent(
-                    <CreateUsernameForm createUsername={createUsername} />
-                );
-                setFloatingWindow(true);
-            } else {
-                getUser(localStorage.getItem("username"))
-                    .then((user) => {
-                        setUsername(user.username);
-                        pubnub.setUUID(user.username);
-                    })
-                    .catch((e) => {
-                        localStorage.clear("username");
-                        setFloatingWindowContent(
-                            <CreateUsernameForm
-                                createUsername={createUsername}
-                            />
-                        );
-                        setFloatingWindow(true);
-                    });
-            }
+            getUser(localStorage.getItem("username"))
+                .then((user) => {
+                    setUsername(user.username);
+                    pubnub.setUUID(user.username);
+                })
+                .catch((e) => {
+                    localStorage.clear("username");
+                    setFwShow(
+                        <CreateUsernameForm submitHook={onCreateUsername} />
+                    );
+                });
         }
+        // When this component unmounts, unsub from all the channels
+        return () => pubnub.unsubscribeAll();
     }, []);
-
-    // Side effect: whenever we open or close the floating window, bind listeners
-    useEffect(() => {
-        // Callback function for when we click w floating window open
-        const handleClicks = (e) => {
-            // If we clicked outisde the floating window
-            if (fwRef.current && !fwRef.current.contains(e.target)) {
-                // Hide the window and remove the
-                setFloatingWindow(false);
-                document.removeEventListener("click", handleClicks);
-            }
-        };
-
-        if (!floatingWindow) {
-            document.removeEventListener("click", handleClicks);
-        } else {
-            // Bind the click-anywhere-and-close event if there is a username
-            if (username) {
-                document.addEventListener("click", handleClicks);
-            }
-        }
-    }, [floatingWindow]);
 
     // This can be done better-- but rebuild the messages function w new messages
     useEffect(() => {
@@ -198,8 +148,6 @@ const App = () => {
                 channels: channels.map((channel) => channel.url),
             });
         }
-        // When this component unmounts, unsub from all the channels
-        return () => pubnub.unsubscribeAll();
     }, [channels]);
 
     // If we don't have a current channel, set it based on URL
@@ -229,9 +177,7 @@ const App = () => {
 
     return (
         <div className="App">
-            <FloatingWindow show={floatingWindow} ref={fwRef}>
-                {floatingWindowContent}
-            </FloatingWindow>
+            <FloatingWindow show={fwShow} ref={fwRef} forceShow={!username} />
 
             <PageHide show={!username} />
 
@@ -242,27 +188,18 @@ const App = () => {
                     currentChannel={currentChannel} // TODO: move channel state to channels component
                     changeChannel={changeChannel}
                     openNewChannelForm={() => {
-                        setFloatingWindowContent(
-                            <NewChannelForm
-                                changeChannel={(channel) => {
-                                    setFloatingWindow(false);
-                                    changeChannel(channel);
-                                }}
-                            />
-                        );
-                        toggleFloatingWindow();
+                        setFwShow(<NewChannelForm submitHook={onNewChannel} />);
                     }}
                 />
                 <UserControl
                     username={username}
                     openChangeUsernameForm={() => {
-                        setFloatingWindowContent(
+                        setFwShow(
                             <ChangeUsernameForm
                                 username={username}
-                                changeUser={changeUser}
+                                submitHook={onCreateUsername}
                             />
                         );
-                        toggleFloatingWindow();
                     }}
                     logoutUser={logoutUser}
                 />

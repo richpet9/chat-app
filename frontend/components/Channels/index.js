@@ -6,7 +6,6 @@ const Channels = ({
     channels,
     currentChannel,
     changeChannel,
-    placeholder,
     openNewChannelForm,
 }) => {
     return (

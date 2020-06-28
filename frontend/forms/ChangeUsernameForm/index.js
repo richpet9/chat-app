@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import FAInput from "../../components/FAInput";
-import { getUser } from "../../helpers/UserHelper";
+import { getUser, changeUsername } from "../../helpers/UserHelper";
 
 const ChangeUsernameForm = (props) => {
     const [usernameValid, setUsernameValid] = useState(false);
@@ -42,7 +42,15 @@ const ChangeUsernameForm = (props) => {
 
     const submitForm = () => {
         if (formValid) {
-            props.changeUser(inputs.username.current.value);
+            const str = inputs.username.current.value;
+            changeUsername(props.username, str)
+                .then(() => {
+                    localStorage.setItem("username", str);
+                    props.submitHook(inputs);
+                })
+                .catch((e) => {
+                    console.warn("Error when changing sername: " + e);
+                });
         }
     };
 

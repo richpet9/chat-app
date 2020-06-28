@@ -51,10 +51,9 @@ const NewChannelForm = (props) => {
 
     const submitForm = () => {
         if (formValid) {
-            createChannel(
-                inputs.url.current.value,
-                inputs.name.current.value
-            ).then((res) => props.changeChannel(res));
+            createChannel(inputs.url.current.value, inputs.name.current.value)
+                .then((res) => props.submitHook({ id: res.id, ...inputs }))
+                .catch((e) => console.warn("Error creating channel: " + e));
         }
     };
 
