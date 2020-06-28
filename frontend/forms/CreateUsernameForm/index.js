@@ -40,7 +40,9 @@ const CreateUsernameForm = (props) => {
         });
     };
 
-    const submitForm = () => {
+    const submitForm = (e) => {
+        e.preventDefault();
+
         if (formValid) {
             const str = inputs.username.current.value;
             createUser(str)
@@ -62,7 +64,7 @@ const CreateUsernameForm = (props) => {
     }, [usernameValid]);
 
     return (
-        <form className="create-username form" action="#">
+        <form className="create-username form">
             <div className="form-name">Create Username</div>
 
             <label htmlFor="url" className="text">
@@ -81,7 +83,7 @@ const CreateUsernameForm = (props) => {
                 id="name"
                 value="CONTINUE"
                 disabled={!formValid}
-                onClick={submitForm}
+                onClick={(e) => submitForm(e)}
             />
         </form>
     );

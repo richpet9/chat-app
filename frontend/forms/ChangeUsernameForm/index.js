@@ -40,7 +40,9 @@ const ChangeUsernameForm = (props) => {
         });
     };
 
-    const submitForm = () => {
+    const submitForm = (e) => {
+        e.preventDefault();
+
         if (formValid) {
             const str = inputs.username.current.value;
             changeUsername(props.username, str)
@@ -64,7 +66,7 @@ const ChangeUsernameForm = (props) => {
     }, [usernameValid]);
 
     return (
-        <form className="change-username form" action="#">
+        <form className="change-username form">
             <div className="form-name">Change Username</div>
 
             <label htmlFor="url" className="text">
@@ -83,7 +85,7 @@ const ChangeUsernameForm = (props) => {
                 id="name"
                 value="CONTINUE"
                 disabled={!formValid}
-                onClick={submitForm}
+                onClick={(e) => submitForm(e)}
             />
         </form>
     );

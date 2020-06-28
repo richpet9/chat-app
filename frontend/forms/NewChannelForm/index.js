@@ -49,7 +49,9 @@ const NewChannelForm = (props) => {
         });
     };
 
-    const submitForm = () => {
+    const submitForm = (e) => {
+        e.preventDefault();
+
         if (formValid) {
             createChannel(inputs.url.current.value, inputs.name.current.value)
                 .then((res) => props.submitHook({ id: res.id, ...inputs }))
@@ -67,10 +69,7 @@ const NewChannelForm = (props) => {
     }, [urlValid, nameValid]);
 
     return (
-        <form
-            className="new-channel form"
-            action={"#" + (inputs.url.current ? inputs.url.current.value : "")}
-        >
+        <form className="new-channel form">
             <div className="form-name">Create Channel</div>
 
             <label htmlFor="url" className="text">
