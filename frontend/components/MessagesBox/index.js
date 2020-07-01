@@ -1,18 +1,33 @@
-import React, { useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 import "./index.scss";
 
 const MessagesBox = ({ messages }) => {
+    const [height, setHeight] = useState(0);
     const containerRef = useRef();
 
+    // Update the height function
+    const updateHeight = () => {
+        setHeight(window.innerHeight - 104);
+    };
+
+    // When the window resizes, update the height
+    window.onresize = updateHeight;
+
+    // Whenever we get messages (or window size changes), scroll the message box down
     useEffect(() => {
         containerRef.current.scrollTo(0, containerRef.current.scrollHeight);
-    }, [messages]);
+    }, [messages, height]);
+
+    // Update the window height on first mount
+    useEffect(() => {
+        updateHeight();
+    }, []);
 
     return (
         <div
             className="messages-container"
-            style={{ height: window.innerHeight - 104 }}
+            style={{ height: height }}
             ref={containerRef}
         >
             {messages.map((message, messageIndex) => {
