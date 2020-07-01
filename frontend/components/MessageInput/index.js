@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { cleanWords, isProfane } from "../../helpers/WordFilter";
 
 import "./index.scss";
 
@@ -11,7 +12,9 @@ const MessageInput = ({ sendMessage }) => {
         if (msgCooldown > 0) {
             setSpam(true);
         } else {
-            sendMessage(message);
+            // Clean the message of profanity
+            const cleanedMsg = cleanWords(message);
+            sendMessage(cleanedMsg);
             setMessage("");
             setMsgCooldown(4);
         }

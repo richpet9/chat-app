@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import FAInput from "../../components/FAInput";
 import { getUser, createUser } from "../../helpers/UserHelper";
+import { isProfane } from "../../helpers/WordFilter";
 
 const CreateUsernameForm = (props) => {
     const [usernameValid, setUsernameValid] = useState(false);
@@ -30,6 +31,10 @@ const CreateUsernameForm = (props) => {
                             reject(
                                 "Username must be longer than 3 characters and less than 256."
                             );
+                        } else if (isProfane(str)) {
+                            // Username contains profanity
+                            setUsernameValid(false);
+                            reject("Username cannot contain profanity.");
                         } else {
                             // If length is not an issue, return good
                             setUsernameValid(true);
