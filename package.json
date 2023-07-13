@@ -14,7 +14,7 @@
         "pubnub-react": "^2.0.0",
         "react": "^16.13.1",
         "react-dom": "^16.13.1",
-        "sails": "^1.2.4",
+        "sails": "^1.5.6",
         "sails-hook-grunt": "^4.0.0",
         "sails-hook-orm": "^2.1.1",
         "sails-hook-sockets": "^2.0.0",
